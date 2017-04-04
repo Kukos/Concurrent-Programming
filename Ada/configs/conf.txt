@@ -1,0 +1,12 @@
+# File contains configs for simulation
+# Format:
+# MODE: SILENT or NOISY
+# Second per hour in simulator
+# Num of Trains
+# Num of Switches
+# Num of Tracks
+SILENT
+1
+4
+14
+30
