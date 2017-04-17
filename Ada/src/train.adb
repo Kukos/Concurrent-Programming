@@ -87,6 +87,7 @@ protected body Train_t is
         end case;
 
         New_Line;
+        New_Line;
     end ShowPos;
 
     entry Show when TRUE is
@@ -113,7 +114,7 @@ protected body Train_t is
         end case;
 
         New_Line;
-
+        New_Line;
     end Show;
 
 end Train_t;

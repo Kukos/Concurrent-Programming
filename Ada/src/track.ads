@@ -1,4 +1,4 @@
--- This Package contain functions of our Track
+-- This Package contains functions of our Track
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

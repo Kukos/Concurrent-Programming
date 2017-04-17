@@ -1,4 +1,4 @@
--- This Package contain functions of Train Driver ( Single task )
+-- This Package contains functions of Train Driver ( Single task )
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

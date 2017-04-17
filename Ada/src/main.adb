@@ -1,3 +1,8 @@
+-- MAIN
+-- Author: Michal Kukowski
+-- email: michalkukowski10@gmail.com
+-- LICENCE: GPL3.0
+
 with Ada.Text_IO; use Ada.Text_IO;
 with Configs; use Configs;
 with Train; use Train;

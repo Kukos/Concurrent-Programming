@@ -1,4 +1,4 @@
--- This Package contain GLOBAL Configs
+-- This Package contains GLOBAL Configs
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

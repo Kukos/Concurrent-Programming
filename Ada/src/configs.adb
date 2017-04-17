@@ -109,6 +109,7 @@ begin
     Put_Line("Num Switches: " & Integer'Image(Conf.NumSwitches));
     Put_Line("Num Tracks: " & Integer'Image(Conf.NumTracks));
     New_Line;
+    New_Line;
 
 end ShowConfigs;
 

@@ -1,4 +1,4 @@
--- This Package contain funtion to parse file to graph
+-- This Package contains funtion to parse file to graph
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

@@ -1,4 +1,4 @@
--- This Package contain functions of our Train
+-- This Package contains functions of our Train
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

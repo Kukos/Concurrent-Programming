@@ -102,6 +102,7 @@ begin
 
     Put_Line("]");
     New_Line;
+    New_Line;
 end Show;
 
 entry AddVer(V :in Integer) when TRUE is

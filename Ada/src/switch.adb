@@ -48,6 +48,7 @@ begin
 
     Put_Line("]");
     New_Line;
+    New_Line;
 
 end Show;
 

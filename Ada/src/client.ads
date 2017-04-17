@@ -1,4 +1,4 @@
--- This Package contain functions of Client to talk with user
+-- This Package contains functions of Client to talk with user
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0

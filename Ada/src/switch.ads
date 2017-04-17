@@ -1,4 +1,4 @@
--- This Package contain functions of our Switch
+-- This Package contains functions of our Switch
 -- Author: Michal Kukowski
 -- email: michalkukowski10@gmail.com
 -- LICENCE: GPL3.0
