@@ -203,7 +203,7 @@ procedure LoadTrains is
     MS      :Integer;
     CAP     :Integer;
 begin
-    Open(File => File, Mode => In_File, Name => "configs/trains.txt");
+    Open(File => File, Mode => In_File, Name => "../configs/trains.txt");
 
     -- SKIP ALL COMMENTS
     loop exit when End_Of_File(File);

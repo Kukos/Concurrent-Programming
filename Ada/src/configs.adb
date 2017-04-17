@@ -57,7 +57,7 @@ procedure LoadConfigs is
     File :File_Type;
     Line :Unbounded_String;
 begin
-    Open(File => File, Mode => In_File, Name => "configs/conf.txt");
+    Open(File => File, Mode => In_File, Name => "../configs/conf.txt");
 
     -- SKIP ALL COMMENTS
     loop exit when End_Of_File(File);

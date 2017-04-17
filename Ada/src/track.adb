@@ -210,7 +210,7 @@ procedure LoadTracks is
     C       :Integer;
     OC      :Integer;
 begin
-    Open(File => File, Mode => In_File, Name => "configs/tracks.txt");
+    Open(File => File, Mode => In_File, Name => "../configs/tracks.txt");
 
     -- SKIP ALL COMMENTS
     loop exit when End_Of_File(File);

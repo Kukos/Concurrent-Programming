@@ -15,7 +15,7 @@ procedure LoadGraph is
     C   :Integer;
     OC  :Integer;
 begin
-    Open(File => File, Mode => In_File, Name => "configs/graph.txt");
+    Open(File => File, Mode => In_File, Name => "../configs/graph.txt");
 
     -- SKIP ALL COMMENTS
     loop exit when End_Of_File(File);
