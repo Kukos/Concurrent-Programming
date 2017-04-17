@@ -3,3 +3,8 @@
 
 # Ada Library Information
 *.ali
+
+Go/bin/*
+Go/pkg/*
+Go/src/github.com/*
+Go/src/golang.org/*
