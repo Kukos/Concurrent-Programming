@@ -64,7 +64,7 @@ begin
                     Put_Line("### [ " & Integer'Image(ID) & "  ]    " &  "GO TO STATION: " & Integer'Image(TI));
                 end if;
 
-                Track.GetHTime(Time);
+                Track.GetHTime(Time) * Float(GetSPH);
 
             else -- it's normal track, so let's go
 
