@@ -64,8 +64,9 @@ begin
                     Put_Line("### [ " & Integer'Image(ID) & "  ]    " &  "GO TO STATION: " & Integer'Image(TI));
                 end if;
 
-                Track.GetHTime(Time) * Float(GetSPH);
-
+                Track.GetHTime(Time);
+                Time := Time * Float(GetSPH);
+                
             else -- it's normal track, so let's go
 
                 Train.ChangePos(POS_TRACK, Route(I));
