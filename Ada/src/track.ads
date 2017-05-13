@@ -25,7 +25,10 @@ package Track is
         entry SetSpeed(S :in Integer);
         entry BUSY;
         entry FREE;
+        entry Breaking;
+        entry Fix;
         entry Show;
+        entry Reserve;
         entry AddVer(V :in Integer);
         entry CreateVer(N :in Integer);
         entry GetVers(V :out AVers_PTR);
@@ -36,6 +39,7 @@ package Track is
         Typee       :Integer;
         Vers        :AVers_PTR;
         CurVer      :Integer;
+        isBroken    :Boolean := FALSE;
 
         -- STATION
         HTime        :Float;
@@ -59,7 +63,6 @@ package Track is
         entry Show;
     private
         Tracks      :ATracks_PTR;
-        CurTrack    :Integer;
         Init        :Boolean := False;
     end Tracks_P;
 

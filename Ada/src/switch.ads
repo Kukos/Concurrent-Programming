@@ -6,6 +6,7 @@
 package Switch is
 
     type AEdges is array(Integer range <>) of Integer;
+    type AEdges_PTR is access AEdges;
 
     protected type Switch_t is
         entry IsFree(B :out Boolean);
@@ -16,14 +17,19 @@ package Switch is
         entry SetID(I :in Integer);
         entry SetStayTime(ST :in Float);
         entry CreateAEdges(N :in Integer);
+        entry GetEdges(E :out AEdges_PTR);
         entry BUSY;
         entry FREE;
+        entry Reserve;
+        entry Breaking;
+        entry Fix;
 
     private
         ID          :Integer;
         StayTime    :Float;
         Freee       :Boolean := TRUE;
-        Edges       :access AEdges;
+        IsBroken    :Boolean := FALSE;
+        Edges       :AEdges_PTR;
         CurEdge     :Integer;
     end Switch_t;
 
@@ -41,7 +47,6 @@ package Switch is
         entry Show;
     private
         Switches    :ASwitches_PTR;
-        CurSwitch   :Integer;
         Init        :Boolean := False;
     end Switches_P;
 

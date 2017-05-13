@@ -5,8 +5,10 @@
 # Num of Trains
 # Num of Switches
 # Num of Tracks
-SILENT
+# Probability of breaking
+NOISY
 1
-4
+5
 14
-30
+31
+10

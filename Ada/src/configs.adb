@@ -27,6 +27,11 @@ begin
     Conf.NumSwitches := NS;
 end SetNSwiches;
 
+procedure SetProbability(P: in Integer) is
+begin
+    Conf.Probability := P;
+end SetProbability;
+
 function GetMode return Integer is
 begin
     return Conf.Mode;
@@ -51,6 +56,11 @@ function GetNSwitches return Integer is
 begin
     return Conf.NumSwitches;
 end GetNSwitches;
+
+function GetProbability return Integer is
+begin
+    return Conf.Probability;
+end GetProbability;
 
 -- A little magic here
 procedure LoadConfigs is
@@ -88,6 +98,9 @@ begin
 
     -- SET Num of Tracks
     SetNTracks(Integer'Value(To_String(Line)));
+    Line := To_Unbounded_String(Get_Line(File));
+
+    SetProbability(Integer'Value(To_String(Line)));
 
     Close(File);
 
@@ -108,6 +121,7 @@ begin
     Put_Line("Num Trains: " & Integer'Image(Conf.NumTrains));
     Put_Line("Num Switches: " & Integer'Image(Conf.NumSwitches));
     Put_Line("Num Tracks: " & Integer'Image(Conf.NumTracks));
+    Put_Line("Probability: " & Integer'Image(Conf.Probability));
     New_Line;
     New_Line;
 

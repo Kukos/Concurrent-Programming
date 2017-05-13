@@ -3,6 +3,8 @@ with Track; use Track;
 with Train; use Train;
 with Switch; use Switch;
 with Configs; use Configs;
+with Graph; use Graph;
+with RepairTeam; use RepairTeam;
 
 package body Driver is
 
@@ -23,6 +25,7 @@ task body Driver_t is
     Vers        :AVers_PTR;
     NewSwitchID :Integer;
     FirstTime   :Boolean;
+    N           :Node_PTR;
 begin
     accept Start(T :in Train_PTR) do
         Train := T;
@@ -66,7 +69,7 @@ begin
 
                 Track.GetHTime(Time);
                 Time := Time * Float(GetSPH);
-                
+
             else -- it's normal track, so let's go
 
                 Train.ChangePos(POS_TRACK, Route(I));
@@ -92,6 +95,9 @@ begin
 
             -- time for driving or waiting for people
             delay Duration(Time);
+
+            N := CreateNode(EDGE, TI);
+            Using_PTR.UseItem(N);
 
             -- Free Track
             Track.FREE;
@@ -144,6 +150,9 @@ begin
 
             -- wait
             delay Duration(Time);
+
+            N := CreateNode(VERTEX, CurSwitchID);
+            Using_PTR.UseItem(N);
 
             -- go out
             Switch.FREE;

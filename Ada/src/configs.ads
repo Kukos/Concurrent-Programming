@@ -14,6 +14,7 @@ package Configs is
     procedure SetNTrains(NT :in Integer);
     procedure SetNTracks(NT :in Integer);
     procedure SetNSwiches(NS :in Integer);
+    procedure SetProbability(P :in Integer);
 
     -- getters
     function GetMode return Integer;
@@ -21,6 +22,7 @@ package Configs is
     function GetNTrains return Integer;
     function GetNTracks return Integer;
     function GetNSwitches return Integer;
+    function GetProbability return Integer;
 
     -- Load Configs from File
     procedure LoadConfigs;
@@ -38,6 +40,7 @@ private
         NumTrains   :Integer;
         NumTracks   :Integer;
         NumSwitches :Integer;
+        Probability :Integer;
     end record;
 
     -- static variable

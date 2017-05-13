@@ -1,5 +1,6 @@
-with Ada.Strings.Unbounded, Ada.Text_IO, Configs;
-use Ada.Strings.Unbounded, Ada.Text_IO, Configs;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
+with Configs; use Configs;
 
 package body Track is
 
@@ -60,7 +61,23 @@ begin
     Speed := S;
 end SetSpeed;
 
-entry BUSY when Freee = TRUE is
+entry Breaking when isBroken = FALSE is
+begin
+    if GetMode = NOISY then
+        Put_Line("!!!!! TRACK  " & Integer'Image(ID) & "  IS BROKEN !!!!!");
+    end if;
+    isBroken := TRUE;
+end Breaking;
+
+entry Fix when isBroken = TRUE is
+begin
+    if GetMode = NOISY then
+        Put_Line("----- TRACK  " & Integer'Image(ID) & "  IS FIXED -----");
+    end if;
+    isBroken := FALSE;
+end Fix;
+
+entry BUSY when Freee = TRUE and not isBroken is
 begin
     Freee := FALSE;
 end BUSY;
@@ -69,6 +86,11 @@ entry FREE when Freee = FALSE is
 begin
     Freee := TRUE;
 end FREE;
+
+entry Reserve when Freee = TRUE is
+begin
+    Freee := FALSE;
+end Reserve;
 
 entry Show when TRUE is
 begin
@@ -79,6 +101,10 @@ begin
     end if;
 
     Put_Line("ID: " & Integer'Image(ID));
+
+    if isBroken = TRUE then
+        Put_Line("BROKEN!");
+    end if;
 
     if Freee = TRUE then
         Put_Line("State: FREE");
@@ -136,15 +162,15 @@ protected body Tracks_P is
     entry Create(N :in Integer) when not Init is
     begin
         Tracks := new ATracks(1 .. N);
-        CurTrack := 1;
         Init := TRUE;
     end Create;
 
     entry Insert(T :in Track_PTR) when Init is
+    I :Integer;
     begin
-        if CurTrack <= Tracks'Length then
-            Tracks(CurTrack) := T;
-            CurTrack := CurTrack + 1;
+        T.GetID(I);
+        if I >= 1 AND I <= Tracks'Length then
+            Tracks(I) := T;
         end if;
     end Insert;
 
@@ -181,7 +207,7 @@ begin
     T.SetLen(0);
     T.SetSpeed(0);
     T.SetHTime(HT);
-    T.CreateVer(GetNSwitches);
+    T.CreateVer(2);
     return T;
 end CreateStationTrack;
 
@@ -194,7 +220,7 @@ begin
     T.SetLen(L);
     T.SetSpeed(S);
     T.SetHTime(0.0);
-    T.CreateVer(GetNSwitches);
+    T.CreateVer(2);
     return T;
 end CreateNormalTrack;
 

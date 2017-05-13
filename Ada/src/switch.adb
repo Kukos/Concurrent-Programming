@@ -1,5 +1,6 @@
-with Ada.Strings.Unbounded, Ada.Text_IO, Configs;
-use Ada.Strings.Unbounded, Ada.Text_IO, Configs;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
+with Configs; use Configs;
 
 package body Switch is
 
@@ -28,11 +29,21 @@ begin
     end if;
 end AddEdge;
 
+entry GetEdges(E :out AEdges_PTR) when TRUE is
+begin
+    E := Edges;
+end GetEdges;
+
 entry Show when TRUE is
 begin
     Put_Line("Switch:");
     Put_Line("ID: " & Integer'Image(ID));
     Put_Line("StayTime: " & Float'Image(StayTime));
+
+    if isBroken = TRUE then
+        Put_Line("BROKEN!");
+    end if;
+
     if Freee = TRUE then
         Put_Line("State: FREE");
     else
@@ -62,10 +73,31 @@ begin
     StayTime := ST;
 end SetStayTime;
 
-entry BUSY when Freee = TRUE is
+entry Breaking when IsBroken = FALSE is
+begin
+    if GetMode = NOISY then
+        Put_Line("!!!!! SWITCH  " & Integer'Image(ID) & "  IS BROKEN !!!!!");
+    end if;
+    isBroken := TRUE;
+end Breaking;
+
+entry Fix when isBroken = TRUE is
+begin
+    if GetMode = NOISY then
+        Put_Line("----- SWITCH  " & Integer'Image(ID) & "  IS FIXED -----");
+    end if;
+        isBroken := FALSE;
+end Fix;
+
+entry BUSY when Freee = TRUE AND not isBroken is
 begin
     Freee := FALSE;
 end BUSY;
+
+entry Reserve when Freee = TRUE is
+begin
+    Freee := FALSE;
+end Reserve;
 
 entry FREE when Freee = FALSE is
 begin
@@ -87,15 +119,15 @@ protected body Switches_P is
     entry Create(N :in Integer) when not Init is
     begin
         Switches := new ASwitches(1 .. N);
-        CurSwitch := 1;
         Init := TRUE;
     end Create;
 
     entry Insert(S :in Switch_PTR) when Init is
+    I :Integer;
     begin
-        if CurSwitch <= Switches'Length then
-            Switches(CurSwitch) := S;
-            CurSwitch := CurSwitch + 1;
+        S.GetID(I);
+        if I >= 1 AND I <= Switches'Length then
+            Switches(I) := S;
         end if;
     end Insert;
 

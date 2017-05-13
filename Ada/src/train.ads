@@ -55,7 +55,6 @@ package Train is
         entry ShowPos;
     private
         Trains       :ATrains_PTR;
-        CurTrain     :Integer;
         Init         :Boolean := False;
     end Trains_P;
 

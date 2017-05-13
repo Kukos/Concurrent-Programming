@@ -1,5 +1,8 @@
-with Ada.Strings.Unbounded, Ada.Text_IO, Configs;
-use Ada.Strings.Unbounded, Ada.Text_IO, Configs;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
+with Configs; use Configs;
+with Graph; use Graph;
+with RepairTeam; use RepairTeam;
 
 package body Train is
 
@@ -124,15 +127,16 @@ protected body Trains_P is
     entry Create(N :in Integer) when not Init is
     begin
         Trains := new ATrains(1 .. N);
-        CurTrain := 1;
         Init := TRUE;
     end Create;
 
     entry Insert(T :in Train_PTR) when Init is
+    I :Integer;
     begin
-        if CurTrain <= Trains'Length then
-            Trains(CurTrain) := T;
-            CurTrain := CurTrain + 1;
+        T.GetID(I);
+
+        if I >= 1 AND I <= Trains'Length then
+            Trains(I) := T;
         end if;
     end Insert;
 

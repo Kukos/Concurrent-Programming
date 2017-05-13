@@ -11,6 +11,7 @@ with Track; use Track;
 with Client; use Client;
 with Graph; use Graph;
 with Driver; use Driver;
+with RepairTeam; use RepairTeam;
 
 procedure main is
     Drivers :access ADrivers;
@@ -30,13 +31,17 @@ begin
     LoadTracks;
     LoadGraph;
 
+    RepairNodeStation := CreateNode(EDGE, GetNTracks);
+    Trains.GetByID(GetNTrains, RepairTrain);
+    RepairTrain.ChangePos(POS_STATION, NodeGetID(RepairNodeStation));
+
     -- start task to talk with user iff mode = silent
     if GetMode = SILENT then
         Talk.Start;
     end if;
 
     -- Start Drivers
-    Drivers := new ADrivers(1 .. GetNTrains);
+    Drivers := new ADrivers(1 .. (GetNTrains - 1));
     for I in Drivers'range loop
         Trains.GetByID(I, T);
         Drivers(I) := new Driver_t;
