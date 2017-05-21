@@ -11,7 +11,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-    "strconv"
+	"strconv"
 )
 
 // SILENT - silent mode, menu is enabled, no default print on stdout
@@ -27,6 +27,7 @@ type Config struct {
 	numTrains   int
 	numTracks   int
 	numSwitches int
+	probability int
 }
 
 // Conf - global Configs
@@ -59,6 +60,11 @@ func (c *Config) NumSwitches() int {
 	return c.numSwitches
 }
 
+// Probability - get break probability
+func (c *Config) Probability() int {
+	return c.probability
+}
+
 /* SETTERS */
 
 // SetMode - set mode
@@ -86,6 +92,11 @@ func (c *Config) SetNumSwitches(n int) {
 	c.numSwitches = n
 }
 
+// SetProbability - set break probability
+func (c *Config) SetProbability(p int) {
+	c.probability = p
+}
+
 // Show - show configs
 func (c *Config) Show() {
 	fmt.Println("Configs:")
@@ -107,32 +118,36 @@ func (c *Config) Load() {
 	file, _ := os.Open("../configs/conf.txt")
 	scanner := bufio.NewScanner(file)
 
-    /* SKIP ALL COMMENTS */
+	/* SKIP ALL COMMENTS */
 	for scanner.Scan() && scanner.Text()[0] == '#' {
 	}
 
-    /* SET MODE */
-    if (scanner.Text() == "SILENT") {
-        c.mode = SILENT
-    } else if (scanner.Text() == "NOISY") {
-        c.mode = NOISY
-    }
+	/* SET MODE */
+	if scanner.Text() == "SILENT" {
+		c.mode = SILENT
+	} else if scanner.Text() == "NOISY" {
+		c.mode = NOISY
+	}
 
-    /* SET Seconds per hour */
-    scanner.Scan()
-    c.sPerH, _ = strconv.Atoi(scanner.Text())
+	/* SET Seconds per hour */
+	scanner.Scan()
+	c.sPerH, _ = strconv.Atoi(scanner.Text())
 
-    /* SET Num of Trains */
-    scanner.Scan()
-    c.numTrains, _ = strconv.Atoi(scanner.Text())
+	/* SET Num of Trains */
+	scanner.Scan()
+	c.numTrains, _ = strconv.Atoi(scanner.Text())
 
-    /* SET Num of Switches */
-    scanner.Scan()
-    c.numSwitches, _ = strconv.Atoi(scanner.Text())
+	/* SET Num of Switches */
+	scanner.Scan()
+	c.numSwitches, _ = strconv.Atoi(scanner.Text())
 
-    /* SET num of Tracks */
-    scanner.Scan()
-    c.numTracks, _ = strconv.Atoi(scanner.Text())
+	/* SET num of Tracks */
+	scanner.Scan()
+	c.numTracks, _ = strconv.Atoi(scanner.Text())
 
-    file.Close()
+	/* SET Probability */
+	scanner.Scan()
+	c.probability, _ = strconv.Atoi(scanner.Text())
+
+	file.Close()
 }

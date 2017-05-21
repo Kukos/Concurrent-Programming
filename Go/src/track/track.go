@@ -27,6 +27,7 @@ type Track struct {
 	// common
 	id     int
 	free   bool
+	broken bool
 	typee  int
 	vers   []int
 	curVer int
@@ -42,8 +43,7 @@ type Track struct {
 
 // ATracks array with Track
 type ATracks struct {
-	tracks   []*Track
-	curTrack int
+	tracks []*Track
 }
 
 // Tracks - global Array with Tracks
@@ -54,6 +54,7 @@ func newTrack(n int) *Track {
 	t := new(Track)
 	t.id = 0
 	t.free = true
+	t.broken = false
 	t.typee = NORMAL
 	t.hTime = 0.0
 	t.len = 0
@@ -170,9 +171,34 @@ func (t *Track) Busy() {
 	t.free = false
 }
 
+// Fix - fix Track
+func (t *Track) Fix() {
+	if configs.Conf.Mode() == configs.NOISY {
+		fmt.Printf("----- TRACK %d IS FIXED -----\n", t.id)
+	}
+
+	t.mutex.Unlock()
+	t.broken = false
+}
+
+// Breaking - breaking Track
+func (t *Track) Breaking() {
+	if configs.Conf.Mode() == configs.NOISY {
+		fmt.Printf("!!!!! TRACK %d IS BROKEN !!!!!\n", t.id)
+	}
+
+	t.mutex.Lock()
+	t.broken = true
+}
+
 // IsFree - is track free ?
 func (t *Track) IsFree() bool {
 	return t.free
+}
+
+// isBroken - is Track Broken ?
+func (t *Track) isBroken() bool {
+	return t.broken
 }
 
 // InsertVer - insert switch id as ver
@@ -192,6 +218,10 @@ func (t *Track) Show() {
 	}
 
 	fmt.Printf("ID: %d\n", t.id)
+
+	if t.broken {
+		fmt.Println("BROKEN!")
+	}
 
 	if t.free {
 		fmt.Println("State: FREE")
@@ -219,14 +249,12 @@ func (t *Track) Show() {
 // NewTracks - create array with Tracks
 func (t *ATracks) NewTracks(n int) {
 	t.tracks = make([]*Track, n)
-	t.curTrack = 0
 }
 
 // Insert - insert track to array
 func (t *ATracks) Insert(tr *Track) {
-	if t.curTrack < len(t.tracks) {
-		t.tracks[t.curTrack] = tr
-		t.curTrack++
+	if tr.ID() >= 1 && tr.ID() <= len(t.tracks) {
+		t.tracks[tr.ID()-1] = tr
 	}
 }
 

@@ -23,13 +23,13 @@ type Switch struct {
 	edges    []int
 	curEdge  int
 	free     bool
+	broken   bool
 	mutex    sync.Mutex
 }
 
 // ASwitches - array of switches
 type ASwitches struct {
-	switches  []*Switch
-	curSwitch int
+	switches []*Switch
 }
 
 // Switches - global array of Switches
@@ -47,6 +47,7 @@ func NewSwitch(id int, time float64, n int) *Switch {
 	s.id = id
 	s.stayTime = time
 	s.free = true
+	s.broken = false
 
 	s.edges = make([]int, n)
 	for i := 0; i < len(s.edges); i++ {
@@ -103,9 +104,34 @@ func (s *Switch) Busy() {
 	s.free = false
 }
 
+// Fix - fix switch
+func (s *Switch) Fix() {
+	if configs.Conf.Mode() == configs.NOISY {
+		fmt.Printf("----- SWITCH %d IS FIXED -----\n", s.id)
+	}
+
+	s.mutex.Unlock()
+	s.broken = false
+}
+
+// Breaking - breaking switch
+func (s *Switch) Breaking() {
+	if configs.Conf.Mode() == configs.NOISY {
+		fmt.Printf("!!!!! SWITCH %d IS BROKEN !!!!!\n", s.id)
+	}
+
+	s.mutex.Lock()
+	s.broken = true
+}
+
 // isFree - is switch free ?
 func (s *Switch) isFree() bool {
 	return s.free
+}
+
+// isBroken - is switch Broken ?
+func (s *Switch) isBroken() bool {
+	return s.broken
 }
 
 // Show - show Switch
@@ -113,6 +139,10 @@ func (s *Switch) Show() {
 	fmt.Println("Switch:")
 	fmt.Printf("ID: %d\n", s.id)
 	fmt.Printf("StayTime: %f\n", s.stayTime)
+
+	if s.broken {
+		fmt.Println("BROKEN!")
+	}
 
 	if s.free {
 		fmt.Println("State: FREE")
@@ -132,14 +162,12 @@ func (s *Switch) Show() {
 // NewSwitches - create array with Switches
 func (s *ASwitches) NewSwitches(n int) {
 	s.switches = make([]*Switch, n)
-	s.curSwitch = 0
 }
 
 // Insert - insert Switch to array
 func (s *ASwitches) Insert(sw *Switch) {
-	if s.curSwitch < len(s.switches) {
-		s.switches[s.curSwitch] = sw
-		s.curSwitch++
+	if sw.ID() >= 1 && sw.ID() <= len(s.switches) {
+		s.switches[sw.ID()-1] = sw
 	}
 }
 

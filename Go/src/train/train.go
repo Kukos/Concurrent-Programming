@@ -42,7 +42,6 @@ type Train struct {
 // ATrains - Array of Train
 type ATrains struct {
 	trains   []*Train
-	curTrain int
 }
 
 // Trains Global Array of Trains
@@ -202,14 +201,12 @@ func (t *Train) Show() {
 // NewTrains - create array with Trains
 func (t *ATrains) NewTrains(n int) {
 	t.trains = make([]*Train, n)
-	t.curTrain = 0
 }
 
 // Insert - insert new train
 func (t *ATrains) Insert(train *Train) {
-	if t.curTrain < len(t.trains) {
-		t.trains[t.curTrain] = train
-		t.curTrain++
+	if train.ID() >= 1 && train.ID() <= len(t.trains) {
+		t.trains[train.ID() - 1] = train
 	}
 }
 

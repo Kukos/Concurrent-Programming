@@ -14,6 +14,8 @@ import (
     "fmt"
     "time"
     "myswitch"
+    "graph"
+    "repairteam"
 )
 
 // Driver - train driver
@@ -84,6 +86,7 @@ func (d *Driver) Drive() {
 
             /* Free Track */
             tr.Free()
+            repairteam.UseItem(graph.NewNode(graph.EDGE, tr.ID()))
 
             /* Print info */
             if configs.Conf.Mode() == configs.NOISY {
@@ -130,6 +133,8 @@ func (d *Driver) Drive() {
 
             /* go out */
             s.Free()
+
+            repairteam.UseItem(graph.NewNode(graph.VERTEX, s.ID()))
 
             /* print info */
             if configs.Conf.Mode() == configs.NOISY {

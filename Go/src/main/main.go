@@ -8,14 +8,15 @@
 package main
 
 import (
+	"client"
 	"configs"
+	"driver"
 	"graph"
 	"myswitch"
+	"repairteam"
+	"sync"
 	"track"
 	"train"
-	"sync"
-	"client"
-	"driver"
 )
 
 func main() {
@@ -35,6 +36,8 @@ func main() {
 	track.Tracks.Load()
 	graph.Load()
 
+	repairteam.RepairNodeStation = graph.NewNode(graph.EDGE, configs.Conf.NumTracks())
+	train.Trains.GetTrainByID(configs.Conf.NumTrains()).ChangePos(train.POS_STATION, repairteam.RepairNodeStation.ID())
 
 	/* Start Thread if needed */
 	if configs.Conf.Mode() == configs.SILENT {
@@ -43,11 +46,12 @@ func main() {
 		go client.Talk()
 	}
 
-	drivers := make([]*driver.Driver, configs.Conf.NumTrains())
+	drivers := make([]*driver.Driver, configs.Conf.NumTrains()-1)
 	for i := 0; i < len(drivers); i++ {
 		drivers[i] = driver.New(train.Trains.GetTrainByID(i + 1))
 		wg.Add(1)
 		go drivers[i].Drive()
 	}
+
 	wg.Wait()
 }
